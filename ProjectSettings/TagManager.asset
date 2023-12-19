@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Inimigo
   - doctor
+  - PowerUP
   layers:
   - Default
   - TransparentFX
