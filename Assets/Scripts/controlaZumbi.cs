@@ -54,8 +54,8 @@ public class controlaZumbi : MonoBehaviour
 
     void atacaJogador()
     {
-        Time.timeScale = 0;
-        personagem.GetComponent<controlaJogador>().textoGameOver.SetActive(true);
-        personagem.GetComponent<controlaJogador>().vivo = false;
+        //Time.timeScale = 0;
+        //personagem.GetComponent<controlaJogador>().textoGameOver.SetActive(true);
+        //personagem.GetComponent<controlaJogador>().vivo = false;
     }
 }
