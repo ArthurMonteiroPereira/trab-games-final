@@ -66,7 +66,7 @@ public class ControlaPlayer : MonoBehaviour
     {
         MovePlayer();
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, camera.rotation, Time.deltaTime * 8);
+        transform.rotation = Quaternion.Lerp(transform.rotation, camera.rotation, Time.deltaTime * 10);
     }
 
     private void MyInput()
@@ -90,7 +90,14 @@ public class ControlaPlayer : MonoBehaviour
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
         // rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-        
+        if (horizontalInput != 0 || verticalInput != 0)
+        {
+            GetComponent<Animator>().SetBool("Movendo", true);
+        }
+        else
+        {
+            GetComponent<Animator>().SetBool("Movendo", false);
+        }
         // on ground
         if(grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
