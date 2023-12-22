@@ -8,6 +8,13 @@ public class controlaZumbi : MonoBehaviour
     UnityEngine.AI.NavMeshAgent agent;
     public float velocidade = 8;
 
+    public AudioSource som;
+
+    [SerializeField] public float timer_cooldown = 20f;
+    private float timer = 0f;
+
+    private bool timer_locked_out = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,16 +22,35 @@ public class controlaZumbi : MonoBehaviour
         personagem = GameObject.FindWithTag("Player");
         int geraTipoZumbi = Random.Range(1, 28);
         transform.GetChild(geraTipoZumbi).gameObject.SetActive(true);
+        timer_cooldown = Random.Range(4, 8);
+        timer = timer_cooldown;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if ( timer_locked_out == true )
+        {
+            timer -= Time.deltaTime;
         
+            if ( timer <= 0 )
+            {
+                timer = timer_cooldown;
+                timer_locked_out = false;
+            }
+        }
+        if ( timer_locked_out == false )
+        {
+            timer_locked_out = true;
+            som.Play();
+            
+        }
     }
 
     void FixedUpdate()
     {
+        
         
         
         Vector3 direcao = personagem.transform.position - transform.position;
@@ -54,8 +80,8 @@ public class controlaZumbi : MonoBehaviour
 
     void atacaJogador()
     {
-        //Time.timeScale = 0;
-        //personagem.GetComponent<controlaJogador>().textoGameOver.SetActive(true);
-        //personagem.GetComponent<controlaJogador>().vivo = false;
+        Time.timeScale = 0;
+        personagem.GetComponent<controlaJogador>().textoGameOver.SetActive(true);
+        personagem.GetComponent<controlaJogador>().vivo = false;
     }
 }

@@ -5,6 +5,9 @@ using UnityEngine;
 public class powerup : MonoBehaviour
 {
     public float upgradeCooldownMultiplicator = 0.90f;
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +19,8 @@ public class powerup : MonoBehaviour
     {
         
     }
+
+ 
 
     
 

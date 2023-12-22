@@ -9,6 +9,10 @@ public class controlaArma : MonoBehaviour
     private bool timer_locked_out = false;
     public GameObject bullet;
     public GameObject canoArma;
+
+    public AudioSource plin;
+
+    public AudioSource tiro;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +41,7 @@ public class controlaArma : MonoBehaviour
             if (Input.GetButtonDown("Fire1"))
             {
                 timer_locked_out = true;
+                tiro.Play();
                 Instantiate(bullet, canoArma.transform.position, transform.rotation);
             }
             
@@ -47,6 +52,7 @@ public class controlaArma : MonoBehaviour
     {
         if (other.tag == "PowerUP"){
             timer_cooldown = timer_cooldown * other.gameObject.GetComponent<powerup>().upgradeCooldownMultiplicator;
+            plin.Play();
             Destroy(other.gameObject);
 
         }
