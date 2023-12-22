@@ -14,6 +14,8 @@ public class controlaJogador : MonoBehaviour
     public GameObject textoGameOver;
     public bool vivo = true;
 
+    public GameObject chuva;
+
     // camera 1ps
     public float Sensitivity {
 		get { return sensitivity; }
@@ -72,6 +74,10 @@ public class controlaJogador : MonoBehaviour
 		var yQuat = Quaternion.AngleAxis(rotation.y, Vector3.left);
 
 		transform.localRotation = xQuat * yQuat;
+
+        if(Input.GetKey(KeyCode.C)){
+                chuva.SetActive(false);
+        }
     
     }
     private void FixedUpdate()

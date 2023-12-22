@@ -10,6 +10,11 @@ public class controlaArma : MonoBehaviour
     public GameObject bullet;
     public GameObject canoArma;
 
+    public bool medkit = false;
+    public GameObject inst1;
+
+    public GameObject inst2;
+
     public AudioSource plin;
 
     public AudioSource tiro;
@@ -46,6 +51,15 @@ public class controlaArma : MonoBehaviour
             }
             
         }
+
+        if(medkit){
+            inst1.SetActive(false);
+            inst2.SetActive(true);
+        }
+        else{
+            inst1.SetActive(true);
+            inst2.SetActive(false);
+        }
         
     }
     void OnTriggerEnter(Collider other)
@@ -55,6 +69,17 @@ public class controlaArma : MonoBehaviour
             plin.Play();
             Destroy(other.gameObject);
 
+        }
+
+        if (other.tag == "medkit"){
+            medkit = true;
+            plin.Play();
+            Destroy(other.gameObject);
+
+        }
+
+        if (other.tag == "trap"){
+            other.gameObject.GetComponent<trap>().ativaArmadilha();
         }
 
     }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 public class ControlaPlayer : MonoBehaviour
 {
     [Header("Movement")]
@@ -39,6 +39,16 @@ public class ControlaPlayer : MonoBehaviour
 
     public Transform camera;
 
+    public GameObject chuva;
+
+    public GameObject textoGameOver;
+
+    public GameObject textoVitoria;
+
+    public bool vivo = true;
+
+    
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -51,22 +61,40 @@ public class ControlaPlayer : MonoBehaviour
     {
         // ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.1f, whatIsGround);
-
-        MyInput();
-        SpeedControl();
+        if(Input.GetKey(KeyCode.C)){
+                if(chuva.activeSelf)
+                    chuva.SetActive(false);
+                else
+                    chuva.SetActive(true);
+        }
+        if(vivo){
+            MyInput();
+            SpeedControl();
+            
+            // handle drag
+            if (grounded)
+                rb.drag = groundDrag;
+            else
+                rb.drag = 0;
+        }
+        else{
+            if(Input.GetButtonDown("Fire1")){
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        }
         
-        // handle drag
-        if (grounded)
-            rb.drag = groundDrag;
-        else
-            rb.drag = 0;
+
+        
     }
 
     private void FixedUpdate()
     {
-        MovePlayer();
+        if(vivo){
+            MovePlayer();
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, camera.rotation, Time.deltaTime * 10);
+            transform.rotation = Quaternion.Lerp(transform.rotation, camera.rotation, Time.deltaTime * 10);
+        }
+        
     }
 
     private void MyInput()

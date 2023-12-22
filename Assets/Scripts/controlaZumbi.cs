@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class controlaZumbi : MonoBehaviour
 {
     public GameObject personagem;
     UnityEngine.AI.NavMeshAgent agent;
     public float velocidade = 8;
-
+    public bool ativado ;
     public AudioSource som;
 
     [SerializeField] public float timer_cooldown = 20f;
     private float timer = 0f;
 
-    private bool timer_locked_out = false;
+    private bool timer_locked_out = true;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,7 @@ public class controlaZumbi : MonoBehaviour
         int geraTipoZumbi = Random.Range(1, 28);
         transform.GetChild(geraTipoZumbi).gameObject.SetActive(true);
         timer_cooldown = Random.Range(4, 8);
-        timer = timer_cooldown;
+        timer = Random.Range(0,timer_cooldown);
 
     }
 
@@ -52,36 +53,52 @@ public class controlaZumbi : MonoBehaviour
     {
         
         
-        
-        Vector3 direcao = personagem.transform.position - transform.position;
+        if(personagem != null){
+           Vector3 direcao = personagem.transform.position - transform.position;
      
         
 
-        float distancia = Vector3.Distance(personagem.transform.position, transform.position);
-        if(distancia > 2.6)
-        {
-            agent.destination = personagem.transform.position;
-            //GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + (direcao.normalized * velocidade * Time.deltaTime));
+            float distancia = Vector3.Distance(personagem.transform.position, transform.position);
 
-            Quaternion novaRotacao = Quaternion.LookRotation(direcao);
-            GetComponent<Rigidbody>().MoveRotation(novaRotacao);
-            GetComponent<Animator>().SetBool("atacando", false);
+            if(distancia < 35){
+                ativado = true;
+            }
+            if(ativado){
+                if(distancia > 2.6)
+                {
+                    agent.destination = personagem.transform.position;
+                    //GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + (direcao.normalized * velocidade * Time.deltaTime));
+
+                    Quaternion novaRotacao = Quaternion.LookRotation(direcao);
+                    GetComponent<Rigidbody>().MoveRotation(novaRotacao);
+                    GetComponent<Animator>().SetBool("atacando", false);
+                }
+                
+                else
+                {
+                    agent.destination = personagem.transform.position;
+                    Quaternion novaRotacao = Quaternion.LookRotation(direcao);
+                    GetComponent<Rigidbody>().MoveRotation(novaRotacao);
+                    GetComponent<Animator>().SetBool("atacando", true);
+                } 
+            }
+            
         }
         
-        else
-        {
-            agent.destination = personagem.transform.position;
-            Quaternion novaRotacao = Quaternion.LookRotation(direcao);
-            GetComponent<Rigidbody>().MoveRotation(novaRotacao);
-            GetComponent<Animator>().SetBool("atacando", true);
-        }
         
     }
 
     void atacaJogador()
     {
-        Time.timeScale = 0;
-        personagem.GetComponent<controlaJogador>().textoGameOver.SetActive(true);
-        personagem.GetComponent<controlaJogador>().vivo = false;
+        if(!personagem.GetComponent<ControlaPlayer>().textoVitoria.activeSelf){
+            personagem.GetComponent<ControlaPlayer>().textoGameOver.SetActive(true);
+            personagem.GetComponent<ControlaPlayer>().vivo=false;
+        }
+        
+        
+        
+        
+        //personagem.GetComponent<controlaJogador>().vivo = false;
     }
 }
+ 

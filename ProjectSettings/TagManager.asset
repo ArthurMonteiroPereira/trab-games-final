@@ -7,6 +7,8 @@ TagManager:
   - Inimigo
   - doctor
   - PowerUP
+  - trap
+  - medkit
   layers:
   - Default
   - TransparentFX

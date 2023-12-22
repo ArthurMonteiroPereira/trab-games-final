@@ -5,7 +5,11 @@ using UnityEngine;
 public class Doctor : MonoBehaviour
 {
     public GameObject personagem;
-    public float raioDeSeguimento = 9;
+
+    public GameObject gerador;
+    public float raioDeSeguimento = 15;
+
+    public GameObject heli;
 
     bool ativado = false;
     UnityEngine.AI.NavMeshAgent agent;
@@ -31,21 +35,25 @@ public class Doctor : MonoBehaviour
 
         if(ativado){
             Debug.Log("distancia: " + distancia);
-            if(distancia > raioDeSeguimento || distancia < 2.1)
+            if(distancia > raioDeSeguimento || distancia < 5)
             {
                 agent.destination = agent.transform.position;
+                GetComponent<Animator>().SetBool("Movendo", false);
             }
 
             else
             {
+                GetComponent<Animator>().SetBool("Movendo", true);
                 agent.destination = personagem.transform.position;
 
 
             }    
         }
         else{
-            if(Input.GetKey(KeyCode.E) && distancia < 10){
+            if(Input.GetKey(KeyCode.E) && distancia < 10 && personagem.gameObject.GetComponent<controlaArma>().medkit){
                 ativado = true;
+                heli.SetActive(true);
+                gerador.SetActive(true);
             }
         }
         
